@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Movement;
-
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterController : MonoBehaviour
@@ -9,6 +7,8 @@ public class CharacterController : MonoBehaviour
     private CharacterInputActions characterInput;
 
     [SerializeField] Rigidbody2D rb;
+
+    [SerializeField] Animator characterAnim;
 
     [SerializeField] float movementSpeed;
 
@@ -21,6 +21,9 @@ public class CharacterController : MonoBehaviour
     {
         Vector2 moveInput = characterInput.Movement.Move.ReadValue<Vector2>();
         rb.velocity = moveInput * movementSpeed;
+        characterAnim.SetFloat("Horizontal", moveInput.x);
+        characterAnim.SetFloat("Vertical", moveInput.y);
+        characterAnim.SetFloat("Speed", moveInput.sqrMagnitude);
     }
 
     private void OnEnable() {
@@ -30,10 +33,5 @@ public class CharacterController : MonoBehaviour
     private void OnDisable() {
         characterInput.Disable();
     }
-
-   
-
-   
-
 
 }
